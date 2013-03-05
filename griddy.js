@@ -307,7 +307,8 @@
                 }
             }
 
-            return this.select(r, c);
+            this.wrap(false).select(r, c).wrap(true);
+            return this;
         },
 
         /**
