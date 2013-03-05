@@ -8,6 +8,10 @@
     else if(typeof define === 'function' && define.amd) define(definition);
     else context[name] = definition();
 })('griddy', this, function() {
+    function is(t, v) {
+        return t.toLowerCase() === typeof v;
+    }
+
     function strrep(s, n) {
         var o = '';
         if(n < 1) return o;
@@ -61,19 +65,34 @@
          */
         this.col = 0;
 
-        this.setSize(rows || 1, cols || 1);
+        /**
+         * Whether wrapped movement is enabled
+         * @property _wrapping
+         * @private
+         * @type Boolean
+         * @default false
+         */
+        this._wrapping = false;
+
+        this.size(rows || 1, cols || 1);
     }
 
     Griddy.prototype = {
         /**
-         * Sets the grid size.  Empty cells are set to null.
+         * Get or set grid size.  Empty cells are set to null.
          *
-         * @method setSize
+         * @method size
          * @chainable
-         * @param {number} r Rows
-         * @param {number} c Columns
+         * @param {Number} [r] Rows
+         * @param {Number} [c] Columns
+         * @return {Object} (rows, cols)
          */
-        setSize: function(r, c) {
+        size: function(r, c) {
+            // getter
+            if(r === undefined && c === undefined) 
+                return { rows: this.rows, cols: this.cols };
+
+            // setter(s)
             if(r == this.rows && c == this.cols) return this;
 
             if(r < this.rows) {
@@ -105,16 +124,6 @@
         },
 
         /**
-         * Gets the grid size
-         *
-         * @method getSize
-         * @return {object} (rows, cols)
-         */
-        getSize: function() {
-            return { rows: this.rows, cols: this.cols };
-        },
-
-        /**
          * Get data at selected cell
          *
          * @method get
@@ -136,7 +145,7 @@
          * @return {Array} Row cells
          */
         getRow: function(n, f) {
-            if(typeof n !== 'number')   n = this.row;
+            if(!is('number', n))   n = this.row;
             if(n < 0)                   n = 0;
             else if(n >= this.rows)     n = this.rows - 1;
             if(!f) f = function() { return true; }
@@ -159,7 +168,7 @@
          * @return {Array} Column cells
          */
         getCol: function(n, f) {
-            if(typeof n !== 'number')   n = this.col;
+            if(!is('number', n))   n = this.col;
             if(n < 0)                   n = 0;
             else if(n >= this.cols)     n = this.cols - 1;
             if(!f) f = function() { return true; }
@@ -226,13 +235,12 @@
          * @chainable
          * @param {Number} r Row
          * @param {Number} c Column
-         * @param {Boolean} [w] Wrap
          */
-        select: function(r, c, w) {
-            this.row = (typeof r === 'number' ? r : this.row);
-            this.col = (typeof c === 'number' ? c : this.col);
-            if(w) {
-                this.wrap();
+        select: function(r, c) {
+            this.row = (is('number', r) ? r : this.row);
+            this.col = (is('number', c) ? c : this.col);
+            if(this._wrapping) {
+                this._wrap();
             } else {
                 if(this.row >= this.rows) this.row = this.rows - 1;
                 if(this.row < 0) this.row = 0;
@@ -258,11 +266,11 @@
         /**
          * Wrap selected index to available cell
          *
-         * @method wrap
+         * @method _wrap
          * @private
          * @chainable
          */
-        wrap: function() {
+        _wrap: function() {
             var r = this.row;
             var c = this.col;
 
@@ -294,12 +302,10 @@
          * @chainable
          * @param {String} d Direction (up, down, left, right)
          * @param {Number} [n] Number of steps
-         * @param {Boolean} [w] Whether to wrap traversal
          */
-        move: function(d, n, w) {
-            if(typeof n !== 'number') { w = Boolean(n); n = 1; }
+        move: function(d, n) {
             if(d == 'up' || d == 'down' || d == 'left' || d == 'right') {
-                return this[d](n, w);
+                return this[d](n);
             }
             return this;
         },
@@ -310,12 +316,11 @@
          * @method up
          * @chainable
          * @param {Number} [n] Number of steps
-         * @param {Boolean} [w] Wrap traversal
          */
-        up: function(n, w) {
-            if(typeof n !== 'number') { w = Boolean(n); n = 1; }
+        up: function(n) {
+            if(!n || !is('number', n)) n = 1;
             var r = this.row - n;
-            return this.select(r, null, w);
+            return this.select(r, null);
         },
 
         /**
@@ -324,12 +329,11 @@
          * @method down
          * @chainable
          * @param {Number} [n] Number of steps
-         * @param {Boolean} [w] Wrap traversal
          */
-        down: function(n, w) {
-            if(typeof n !== 'number') { w = Boolean(n); n = 1; }
+        down: function(n) {
+            if(!n || !is('number', n)) n = 1;
             var r = this.row + n;
-            return this.select(r, null, w);
+            return this.select(r, null);
         },
 
         /**
@@ -338,12 +342,11 @@
          * @method left
          * @chainable
          * @param {Number} [n] Number of steps
-         * @param {Boolean} [w] Wrap traversal
          */
-        left: function(n, w) {
-            if(typeof n !== 'number') { w = Boolean(n); n = 1; }
+        left: function(n) {
+            if(!n || !is('number', n)) n = 1;
             var c = this.col - n;
-            return this.select(null, c, w);
+            return this.select(null, c);
         },
 
         /**
@@ -352,12 +355,11 @@
          * @method right
          * @chainable
          * @param {number} [n] Number of steps
-         * @param {boolean} [w] Wrap traversal
          */
-        right: function(n, w) {
-            if(typeof n !== 'number') { w = Boolean(n); n = 1; }
+        right: function(n) {
+            if(!n || !is('number', n)) n = 1;
             var c = this.col + n;
-            return this.select(null, c, w);
+            return this.select(null, c);
         },
 
         /**
@@ -366,15 +368,11 @@
          *
          * @method print
          * @chainable
-         * @param {Object} options Options
+         * @param {Function} printer Printing function
+         * @param {Object} [options] Options
          */
-        print: function(options) {
-            var to = options.to || function(s) {};
-            if(typeof to === 'string' && to == 'console') {
-                to = function(s) { console.log(s); };
-            }
-
-            to(this.toString(options));
+        print: function(printer, options) {
+            if(is('function', printer)) printer(this.toString(options));
             return this;
         },
 
@@ -386,7 +384,7 @@
          * @return {String} Grid as a string
          */
         toString: function(options) {
-            if(!options || typeof options !== 'object') options = {};
+            if(!options || !is('object', options)) options = {};
             var s = '';
 
             var content = options.content || 'x';
