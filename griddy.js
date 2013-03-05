@@ -4,10 +4,10 @@
  * @module griddy
  */
 (function(name, context, definition) {
-    if(typeof module !== 'undefined' && module.exports) module.exports = definition(require('historian'));
-    else if(typeof define === 'function' && define.amd) define(['historian'], definition);
-    else context[name] = definition(context['historian']);
-})('griddy', this, function(H) {
+    if(typeof module !== 'undefined' && module.exports) module.exports = definition();
+    else if(typeof define === 'function' && define.amd) define(definition);
+    else context[name] = definition();
+})('griddy', this, function() {
     function strrep(s, n) {
         var o = '';
         if(n < 1) return o;
@@ -63,7 +63,6 @@
          */
         this.col = 0;
 
-        this.history = H ? new H(this) : null;
         this.setSize(rows || 1, cols || 1);
     }
 
@@ -178,7 +177,7 @@
         },
 
         /**
-         * Set data at selected cell. Undoable.
+         * Set data at selected cell
          *
          * @method set
          * @chainable
@@ -192,7 +191,6 @@
             var cr = this.row;
             var cc = this.col;
             var cd = this.data[cr][cc];
-            if(this.history) this.history.register(this.set, [cd, cr, cc]);
             this.data[cr][cc] = d;
             return this;
         },
@@ -226,7 +224,7 @@
         },
 
         /**
-         * Select a cell for next access. Undoable.
+         * Select a cell for next access
          *
          * @method select
          * @chainable
@@ -236,7 +234,6 @@
          * @return {Griddy} Griddy instance
          */
         select: function(r, c, w) {
-            if(this.history) this.history.register(this.select, [this.row, this.col]);
             this.row = (typeof r === 'number' ? r : this.row);
             this.col = (typeof c === 'number' ? c : this.col);
             if(w) {
@@ -297,7 +294,7 @@
         },
 
         /**
-         * Move selection. Undoable.
+         * Move selection
          *
          * @method move
          * @chainable
@@ -315,7 +312,7 @@
         },
 
         /**
-         * Move selection up. Undoable.
+         * Move selection up
          *
          * @method up
          * @chainable
@@ -330,7 +327,7 @@
         },
 
         /**
-         * Move selection down. Undoable.
+         * Move selection down
          *
          * @method down
          * @chainable
@@ -345,7 +342,7 @@
         },
 
         /**
-         * Move selection left. Undoable.
+         * Move selection left
          *
          * @method left
          * @chainable
@@ -360,7 +357,7 @@
         },
 
         /**
-         * Move selection right. Undoable.
+         * Move selection right
          *
          * @method right
          * @chainable
