@@ -79,6 +79,20 @@
 
     Griddy.prototype = {
         /**
+         * Get or set wrap setting
+         *
+         * @method wrap
+         * @chainable
+         * @param {Boolean} [w] Wrap setting
+         * @return {Boolean} Wrap setting
+         */
+        wrap: function(w) {
+            if(w === undefined) return this._wrapping;
+            this._wrapping = !!w;
+            return this;
+        },
+
+        /**
          * Get or set grid size.  Empty cells are set to null.
          *
          * @method size
@@ -127,8 +141,8 @@
          * Get data at selected cell
          *
          * @method get
-         * @param {number} [r] - Row
-         * @param {number} [c] - Column
+         * @param {Number} [r] - Row
+         * @param {Number} [c] - Column
          * @return {any} Cell data
          */
         get: function(r, c) {
