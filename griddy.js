@@ -9,7 +9,7 @@
     else context[name] = definition();
 })('griddy', this, function() {
     function is(t, v) {
-        return t.toLowerCase() === typeof v;
+        return t.toLowerCase() == typeof v;
     }
 
     function strrep(s, n) {
