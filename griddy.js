@@ -11,9 +11,7 @@
     function strrep(s, n) {
         var o = '';
         if(n < 1) return o;
-        for(var i = 0; i < n; i++) {
-            o += s;
-        }
+        for(var i = 0; i < n; i++) o += s;
         return o;
     }
 
@@ -22,8 +20,8 @@
      *
      * @class Griddy
      * @constructor
-     * @param {number} [rows] - Number of rows
-     * @param {number} [cols] - Number of columns
+     * @param {number} [rows] Number of rows
+     * @param {number} [cols] Number of columns
      */
     function Griddy(rows, cols) {
         this.data = [];
@@ -72,9 +70,8 @@
          *
          * @method setSize
          * @chainable
-         * @param {number} r - Rows
-         * @param {number} c - Columns
-         * @return {Griddy} Griddy instance
+         * @param {number} r Rows
+         * @param {number} c Columns
          */
         setSize: function(r, c) {
             if(r == this.rows && c == this.cols) return this;
@@ -123,7 +120,7 @@
          * @method get
          * @param {number} [r] - Row
          * @param {number} [c] - Column
-         * @return {anything} Cell data
+         * @return {any} Cell data
          */
         get: function(r, c) {
             this.select(r, c);
@@ -181,10 +178,9 @@
          *
          * @method set
          * @chainable
-         * @param {anything} d - Data
-         * @param {number} [r] - Row
-         * @param {number} [c] - Column
-         * @return {Griddy} Griddy instance
+         * @param {any} d - Data
+         * @param {Number} [r] - Row
+         * @param {Number} [c] - Column
          */
         set: function(d, r, c) {
             this.select(r, c);
@@ -199,9 +195,9 @@
          * Tests for empty cell
          *
          * @method isEmpty
-         * @param {number} [r] - Row
-         * @param {number} [c] - Column
-         * @return {boolean} Whether cell is empty
+         * @param {Number} [r] - Row
+         * @param {Number} [c] - Column
+         * @return {Boolean} Whether cell is empty
          */
         isEmpty: function(r, c) {
             var or = this.row;
@@ -228,10 +224,9 @@
          *
          * @method select
          * @chainable
-         * @param {number} r - Row
-         * @param {number} c - Column
-         * @param {boolean} [w] - Wrap
-         * @return {Griddy} Griddy instance
+         * @param {Number} r Row
+         * @param {Number} c Column
+         * @param {Boolean} [w] Wrap
          */
         select: function(r, c, w) {
             this.row = (typeof r === 'number' ? r : this.row);
@@ -251,8 +246,8 @@
          * Tests to see if passed cell is currently selected
          *
          * @method selected
-         * @param {Number} r - Row
-         * @param {Number} c - Column
+         * @param {Number} r Row
+         * @param {Number} c Column
          * @return {Boolean} Whether row is selected
          */
         selected: function(r, c) {
@@ -266,7 +261,6 @@
          * @method wrap
          * @private
          * @chainable
-         * @return {Griddy} Griddy instance
          */
         wrap: function() {
             var r = this.row;
@@ -298,10 +292,9 @@
          *
          * @method move
          * @chainable
-         * @param {string} d - Direction (up, down, left, right)
-         * @param {number} [n] - Number of steps
-         * @param {boolean} [w] - Whether to wrap traversal
-         * @return {Griddy} Griddy instance
+         * @param {String} d Direction (up, down, left, right)
+         * @param {Number} [n] Number of steps
+         * @param {Boolean} [w] Whether to wrap traversal
          */
         move: function(d, n, w) {
             if(typeof n !== 'number') { w = Boolean(n); n = 1; }
@@ -316,9 +309,8 @@
          *
          * @method up
          * @chainable
-         * @param {number} [n] - Number of steps
-         * @param {boolean} [w] - Wrap traversal
-         * @return {Griddy} Griddy instance
+         * @param {Number} [n] Number of steps
+         * @param {Boolean} [w] Wrap traversal
          */
         up: function(n, w) {
             if(typeof n !== 'number') { w = Boolean(n); n = 1; }
@@ -331,9 +323,8 @@
          *
          * @method down
          * @chainable
-         * @param {number} [n] - Number of steps
-         * @param {boolean} [w] - Wrap traversal
-         * @return {Griddy} Griddy instance
+         * @param {Number} [n] Number of steps
+         * @param {Boolean} [w] Wrap traversal
          */
         down: function(n, w) {
             if(typeof n !== 'number') { w = Boolean(n); n = 1; }
@@ -346,9 +337,8 @@
          *
          * @method left
          * @chainable
-         * @param {number} [n] - Number of steps
-         * @param {boolean} [w] - Wrap traversal
-         * @return {Griddy} Griddy instance
+         * @param {Number} [n] Number of steps
+         * @param {Boolean} [w] Wrap traversal
          */
         left: function(n, w) {
             if(typeof n !== 'number') { w = Boolean(n); n = 1; }
@@ -361,9 +351,8 @@
          *
          * @method right
          * @chainable
-         * @param {number} [n] - Number of steps
-         * @param {boolean} [w] - Wrap traversal
-         * @return {Griddy} Griddy instance
+         * @param {number} [n] Number of steps
+         * @param {boolean} [w] Wrap traversal
          */
         right: function(n, w) {
             if(typeof n !== 'number') { w = Boolean(n); n = 1; }
@@ -376,8 +365,8 @@
          * and allows for a custom string handler function
          *
          * @method print
+         * @chainable
          * @param {Object} options Options
-         * @return {Griddy} Griddy instance
          */
         print: function(options) {
             var to = options.to || function(s) {};
