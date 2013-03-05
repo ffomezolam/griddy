@@ -1,0 +1,17 @@
+{
+  "name": "griddy",
+  "version": "0.1.0",
+  "description": "2d grid manager",
+  "main": "griddy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ffomezolam/griddy.git"
+  },
+  "author": "Andrew Malozemoff",
+  "license": "BSD",
+  "gitHead": "a54d16077a68b0cacc92101d3d8a7ed5872f494c",
+  "readmeFilename": "README.md"
+}
