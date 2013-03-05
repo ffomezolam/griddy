@@ -79,7 +79,8 @@
 
     Griddy.prototype = {
         /**
-         * Get or set wrap setting
+         * Get or set wrap status, which determined whether wrapped
+         * movement is enabled
          *
          * @method wrap
          * @chainable
